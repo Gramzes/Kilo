@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "916814075574",
+    "project_id": "kilo-chat-e7976",
+    "storage_bucket": "kilo-chat-e7976.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:916814075574:android:9de8eaba3adccf438bf817",
+        "android_client_info": {
+          "package_name": "com.gramzin.kilo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "916814075574-3479mvm3fu8lfo0k6vuk14gas7i57e3s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gramzin.kilo",
+            "certificate_hash": "7add91e98920043c6f25261807b1d08ad6ab1384"
+          }
+        },
+        {
+          "client_id": "916814075574-991226e3d6lr3u7ll0vfrbbuf6smn9j0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD16UNmiqmjp0rsKdiSzbnp3QqI43sFjlM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "916814075574-991226e3d6lr3u7ll0vfrbbuf6smn9j0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
