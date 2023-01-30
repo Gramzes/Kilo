@@ -3,4 +3,10 @@
     <string name="message">Message</string>
     <string name="attach_file">Attach a file</string>
     <string name="send_message">Send a message</string>
+    <string name="enter_email">Enter Email</string>
+    <string name="enter_pass">Enter the password</string>
+    <string name="repeat_pass">Repeat the password</string>
+    <string name="enter_name">Enter a name</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_up">Sign Up</string>
 </resources>
