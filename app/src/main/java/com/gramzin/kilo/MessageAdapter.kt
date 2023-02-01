@@ -19,14 +19,14 @@ class MessageAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     class MessageInHolder(private val binding: MessageInItemBinding) :
         RecyclerView.ViewHolder(binding.root), Bindable {
         override fun bind(message: Message) {
-
+            binding.messageText.text = message.text.toString()
         }
     }
 
     class MessageOutHolder(private val binding: MessageOutItemBinding) :
         RecyclerView.ViewHolder(binding.root), Bindable {
         override fun bind(message: Message) {
-
+            binding.messageText.text = message.text.toString()
         }
 
     }
@@ -57,6 +57,10 @@ class MessageAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun getItemCount() = messages.size
 
-    override fun getItemViewType(position: Int) = messages[position].type
+    override fun getItemViewType(position: Int) = messages[position].type!!
 
+    fun addMessage(message: Message){
+        messages.add(message)
+        notifyItemInserted(messages.size-1)
+    }
 }

@@ -27,7 +27,7 @@ class StartActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         auth = Firebase.auth
-
+        auth.signOut()
         if(checkIsUserSigned()){
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
