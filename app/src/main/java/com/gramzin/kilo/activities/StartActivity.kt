@@ -13,6 +13,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.gramzin.kilo.R
 import com.gramzin.kilo.databinding.ActivityStartBinding
+import com.gramzin.kilo.model.User
 import com.gramzin.kilo.viewmodel.StartActivityViewModel
 
 class StartActivity : AppCompatActivity() {
@@ -29,7 +30,7 @@ class StartActivity : AppCompatActivity() {
         auth = Firebase.auth
         auth.signOut()
         if(checkIsUserSigned()){
-            val intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, DialogActivity::class.java)
             startActivity(intent)
             finish()
         }
@@ -81,7 +82,7 @@ class StartActivity : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     if(auth.currentUser!!.isEmailVerified) {
-                        val intent = Intent(this, MainActivity::class.java)
+                        val intent = Intent(this, DialogActivity::class.java)
                         startActivity(intent)
                         finish()
                     }
@@ -111,6 +112,7 @@ class StartActivity : AppCompatActivity() {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
+                    viewModel.addUser(User(name))
                     sendVerificationEmail()
                 } else {
                     Toast.makeText(this, task.exception?.localizedMessage, Toast.LENGTH_LONG).show()

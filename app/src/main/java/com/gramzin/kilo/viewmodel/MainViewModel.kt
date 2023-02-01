@@ -8,12 +8,13 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
-import com.gramzin.kilo.MessageAdapter
+import com.gramzin.kilo.adapter.MessageAdapter
 import com.gramzin.kilo.model.Message
+import com.gramzin.kilo.utilities.DatabaseContract
 
 class MainViewModel: ViewModel() {
     private val auth = Firebase.auth
-    private val database = Firebase.database("https://kilo-chat-e7976-default-rtdb.europe-west1.firebasedatabase.app")
+    private val database = Firebase.database(DatabaseContract.DB_PATH)
     private val messagesRef = database.getReference("messages")
 
     var messageText = ""

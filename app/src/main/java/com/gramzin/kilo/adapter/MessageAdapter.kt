@@ -1,4 +1,4 @@
-package com.gramzin.kilo
+package com.gramzin.kilo.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

@@ -15,7 +15,7 @@
         tools:targetApi="31">
         <activity
             android:name=".activities.StartActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,8 +23,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.MainActivity"
-            android:exported="true"/>
+            android:name=".activities.DialogActivity"
+            android:exported="true" />
     </application>
 
 </manifest>
