@@ -1,26 +1,42 @@
 package com.gramzin.kilo.activities
 
-import androidx.appcompat.app.AppCompatActivity
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
-import androidx.activity.viewModels
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import com.gramzin.kilo.databinding.ActivityDialogBinding
 import com.gramzin.kilo.model.Message
-import com.gramzin.kilo.viewmodel.MainViewModel
+import com.gramzin.kilo.viewmodel.DialogModel
+import com.gramzin.kilo.viewmodel.factory.DialogFactory
+
 
 class DialogActivity : AppCompatActivity() {
-
+    companion object{
+        const val DIALOG_KEY = "DIALOG_KEY"
+    }
     lateinit var binding: ActivityDialogBinding
+    private lateinit var viewModel: DialogModel
+    private var selectedImage: Uri? = null
 
-    val auth = Firebase.auth
-    private val viewModel: MainViewModel by viewModels()
+    private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+        if (uri != null) {
+            val text = binding.messageEditText.text.toString()
+            val message = Message(text)
+            viewModel.addMessage(message, uri)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDialogBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val dialogKey = intent.getStringExtra(DIALOG_KEY)
+        viewModel = ViewModelProvider(this, DialogFactory(dialogKey!!))[DialogModel::class.java]
 
         binding.messageEditText.setText(viewModel.messageText)
 
@@ -31,9 +47,11 @@ class DialogActivity : AppCompatActivity() {
         binding.sendMessageBtn.setOnClickListener{
             val text = binding.messageEditText.text.toString()
             val message = Message(text)
-            viewModel.addMessage(message)
+            viewModel.addMessage(message, null)
+        }
+
+        binding.attachFileBtn.setOnClickListener {
+            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
     }
-
-
 }

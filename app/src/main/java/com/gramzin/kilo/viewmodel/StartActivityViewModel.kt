@@ -19,6 +19,6 @@ class StartActivityViewModel: ViewModel() {
         val auth = Firebase.auth
         val database = Firebase.database(DatabaseContract.DB_PATH)
         val usersRef = database.getReference("users")
-        usersRef.child(auth.uid!!).child("name").setValue(user)
+        usersRef.child(auth.uid!!).setValue(user)
     }
 }

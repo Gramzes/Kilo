@@ -9,6 +9,6 @@ class Message(var text: String? = null, var id: String? = null, var imageURL: St
         const val MESSAGE_IN = 1
         const val MESSAGE_OUT = 2
     }
-
+    var messageId: String? = null
     var type: Int? = null
 }

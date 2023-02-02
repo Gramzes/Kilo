@@ -3,6 +3,8 @@ package com.gramzin.kilo.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.gramzin.kilo.R
 import com.gramzin.kilo.databinding.MessageInItemBinding
 import com.gramzin.kilo.databinding.MessageOutItemBinding
 import com.gramzin.kilo.model.Message
@@ -20,6 +22,9 @@ class MessageAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         RecyclerView.ViewHolder(binding.root), Bindable {
         override fun bind(message: Message) {
             binding.messageText.text = message.text.toString()
+            Glide.with(binding.messageImage)
+                .load(message.imageURL)
+                .into(binding.messageImage)
         }
     }
 
@@ -27,6 +32,9 @@ class MessageAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         RecyclerView.ViewHolder(binding.root), Bindable {
         override fun bind(message: Message) {
             binding.messageText.text = message.text.toString()
+            Glide.with(binding.messageImage)
+                .load(message.imageURL)
+                .into(binding.messageImage)
         }
 
     }
@@ -62,5 +70,9 @@ class MessageAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     fun addMessage(message: Message){
         messages.add(message)
         notifyItemInserted(messages.size-1)
+    }
+    fun changeData(key: String){
+        val i = messages.indexOfFirst { it.messageId == key }
+        notifyItemChanged(i)
     }
 }

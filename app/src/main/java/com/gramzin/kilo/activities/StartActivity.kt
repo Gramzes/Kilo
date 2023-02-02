@@ -1,16 +1,19 @@
 package com.gramzin.kilo.activities
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import com.gramzin.kilo.R
 import com.gramzin.kilo.databinding.ActivityStartBinding
 import com.gramzin.kilo.model.User
@@ -22,6 +25,23 @@ class StartActivity : AppCompatActivity() {
     private val viewModel: StartActivityViewModel by viewModels()
     private lateinit var auth: FirebaseAuth
 
+    var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            Toast.makeText(this, "Вам будет выслано письмо для потверждения почты.", Toast.LENGTH_LONG).show()
+            auth.currentUser!!.sendEmailVerification()
+                .addOnCompleteListener { task ->
+                    if (!task.isSuccessful)
+                        Toast.makeText(this, task.exception?.localizedMessage, Toast.LENGTH_LONG).show()
+                }
+            val data: Intent? = result.data
+            val imageUri = data?.data
+            if(imageUri!=null) {
+                val storageRef = Firebase.storage.reference
+                val avatarRef = storageRef.child("users").child(auth.uid!!).child("avatar.png")
+                avatarRef.putFile(imageUri)
+            }
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityStartBinding.inflate(layoutInflater)
@@ -82,7 +102,7 @@ class StartActivity : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     if(auth.currentUser!!.isEmailVerified) {
-                        val intent = Intent(this, DialogActivity::class.java)
+                        val intent = Intent(this, MainActivity::class.java)
                         startActivity(intent)
                         finish()
                     }
@@ -113,7 +133,7 @@ class StartActivity : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     viewModel.addUser(User(name))
-                    sendVerificationEmail()
+                    showSettingsUI()
                 } else {
                     Toast.makeText(this, task.exception?.localizedMessage, Toast.LENGTH_LONG).show()
                 }
@@ -121,14 +141,9 @@ class StartActivity : AppCompatActivity() {
     }
 
 
-    private fun sendVerificationEmail() {
-        Toast.makeText(this, "Вам будет отослано письмо для потверждения почты.", Toast.LENGTH_LONG).show()
+    private fun showSettingsUI() {
         viewModel.signInState.value = true
-        auth.currentUser!!.sendEmailVerification()
-            .addOnCompleteListener { task ->
-                if (!task.isSuccessful)
-                    Toast.makeText(this, task.exception?.localizedMessage, Toast.LENGTH_LONG).show()
-            }
+        resultLauncher.launch(Intent(this, SignUpSettings::class.java))
     }
 
     private val onChangeState = Observer<Boolean> {
