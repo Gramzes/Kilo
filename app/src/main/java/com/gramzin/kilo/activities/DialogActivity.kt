@@ -48,10 +48,16 @@ class DialogActivity : AppCompatActivity() {
             val text = binding.messageEditText.text.toString()
             val message = Message(text)
             viewModel.addMessage(message, null)
+            binding.messageEditText.setText("")
         }
 
         binding.attachFileBtn.setOnClickListener {
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
+        viewModel.onMessageAdded = ::messageAdded
+    }
+
+    fun messageAdded(position: Int){
+        binding.messagesRcView.smoothScrollToPosition(position)
     }
 }

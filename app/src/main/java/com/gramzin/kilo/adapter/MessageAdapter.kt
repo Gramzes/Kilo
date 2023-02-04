@@ -22,6 +22,7 @@ class MessageAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         RecyclerView.ViewHolder(binding.root), Bindable {
         override fun bind(message: Message) {
             binding.messageText.text = message.text.toString()
+            binding.messageTime.text = message.getTimeDate()
             Glide.with(binding.messageImage)
                 .load(message.imageURL)
                 .into(binding.messageImage)
@@ -32,6 +33,7 @@ class MessageAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         RecyclerView.ViewHolder(binding.root), Bindable {
         override fun bind(message: Message) {
             binding.messageText.text = message.text.toString()
+            binding.messageTime.text = message.getTimeDate()
             Glide.with(binding.messageImage)
                 .load(message.imageURL)
                 .into(binding.messageImage)
@@ -74,5 +76,13 @@ class MessageAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     fun changeData(key: String){
         val i = messages.indexOfFirst { it.messageId == key }
         notifyItemChanged(i)
+    }
+
+    fun changeData(message: Message){
+        if (message.messageId!=null) {
+            val i = messages.indexOfFirst { it.messageId == message.messageId }
+            messages[i] = message
+            notifyItemChanged(i)
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.gramzin.kilo.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -18,6 +19,8 @@ class AddDialogAdapter(): RecyclerView.Adapter<AddDialogAdapter.AddDialogHolder>
             var onClick: ((User) -> Unit)? = null
         }
         fun bind(user: User) {
+            turnOnline(false)
+            user.isConnected?.apply { turnOnline(this) }
             user.name?.apply {
                 binding.dialogName.text = this
             }
@@ -29,6 +32,13 @@ class AddDialogAdapter(): RecyclerView.Adapter<AddDialogAdapter.AddDialogHolder>
             binding.dialogLayout.setOnClickListener {
                 onClick?.let { it1 -> it1(user) }
             }
+        }
+
+        private fun turnOnline(isConnected: Boolean){
+            if (isConnected)
+                binding.connectStatus.visibility = View.VISIBLE
+            else
+                binding.connectStatus.visibility = View.GONE
         }
 
     }

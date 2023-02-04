@@ -23,7 +23,7 @@ class DialogModel(dialogId: String): ViewModel() {
 
     var messageText = ""
     var adapter: MessageAdapter = MessageAdapter()
-
+    var onMessageAdded: ((Int)->Unit)? = null
     init {
         messagesRef.addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
@@ -34,11 +34,19 @@ class DialogModel(dialogId: String): ViewModel() {
                     else
                         message.type = Message.MESSAGE_IN
                     adapter.addMessage(message)
+                    onMessageAdded?.let { it(adapter.itemCount - 1) }
                 }
             }
 
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-                TODO("Not yet implemented")
+                val message = snapshot.getValue<Message>()
+                if (message != null) {
+                    if (message.id == auth.uid)
+                        message.type = Message.MESSAGE_OUT
+                    else
+                        message.type = Message.MESSAGE_IN
+                    adapter.changeData(message)
+                }
             }
 
             override fun onChildRemoved(snapshot: DataSnapshot) {
@@ -59,18 +67,19 @@ class DialogModel(dialogId: String): ViewModel() {
         message.id = auth.uid
         val messageRef = messagesRef.push()
         message.messageId = messageRef.key
-        ServerValue.TIMESTAMP
         if (imageUri!=null) {
             val imageRef = messageStorageRef.child("${messageRef.key!!}.png")
             imageRef.putFile(imageUri).addOnSuccessListener{
                 imageRef.downloadUrl.addOnSuccessListener {
                     message.imageURL = it.toString()
                     messageRef.setValue(message)
+                    messageRef.child("timestamp").setValue(ServerValue.TIMESTAMP)
                 }
             }
         }
         else{
             messageRef.setValue(message)
+            messageRef.child("timestamp").setValue(ServerValue.TIMESTAMP)
         }
 
     }
