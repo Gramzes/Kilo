@@ -11,4 +11,5 @@
     <string name="sign_up">Sign Up</string>
     <string name="set_profile_photo">Set a profile photo</string>
     <string name="save">Save</string>
+    <string name="sign_out">Sign Out</string>
 </resources>

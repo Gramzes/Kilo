@@ -1,6 +1,7 @@
 package com.gramzin.kilo.viewmodel
 
 import androidx.lifecycle.ViewModel
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
@@ -119,5 +120,9 @@ class MainViewModel(): ViewModel() {
                 TODO("Not yet implemented")
             }
         })
+    }
+
+    fun signOut(){
+        auth.signOut()
     }
 }

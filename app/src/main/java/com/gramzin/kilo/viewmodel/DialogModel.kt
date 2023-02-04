@@ -25,6 +25,7 @@ class DialogModel(dialogId: String): ViewModel() {
     var adapter: MessageAdapter = MessageAdapter()
     var onMessageAdded: ((Int)->Unit)? = null
     init {
+
         messagesRef.addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 val message = snapshot.getValue<Message>()
